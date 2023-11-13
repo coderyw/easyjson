@@ -16,9 +16,9 @@ import (
 	"sort"
 )
 
-const genPackage = "github.com/mailru/easyjson/gen"
-const pkgWriter = "github.com/mailru/easyjson/jwriter"
-const pkgLexer = "github.com/mailru/easyjson/jlexer"
+const genPackage = "github.com/coderyw/easyjson/gen"
+const pkgWriter = "github.com/coderyw/easyjson/jwriter"
+const pkgLexer = "github.com/coderyw/easyjson/jlexer"
 
 var buildFlagsRegexp = regexp.MustCompile("'.+'|\".+\"|\\S+")
 
@@ -73,11 +73,11 @@ func (g *Generator) writeStub() error {
 	for _, t := range g.Types {
 		fmt.Fprintln(f)
 		if !g.NoStdMarshalers {
-			fmt.Fprintln(f, "func (", t, ") MarshalJSON() ([]byte, error) { return nil, nil }")
+			fmt.Fprintln(f, "func (*", t, ") MarshalJSON() ([]byte, error) { return nil, nil }")
 			fmt.Fprintln(f, "func (*", t, ") UnmarshalJSON([]byte) error { return nil }")
 		}
 
-		fmt.Fprintln(f, "func (", t, ") MarshalEasyJSON(w *jwriter.Writer) {}")
+		fmt.Fprintln(f, "func (*", t, ") MarshalEasyJSON(w *jwriter.Writer) {}")
 		fmt.Fprintln(f, "func (*", t, ") UnmarshalEasyJSON(l *jlexer.Lexer) {}")
 		fmt.Fprintln(f)
 		fmt.Fprintln(f, "type EasyJSON_exporter_"+t+" *"+t)

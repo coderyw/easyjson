@@ -1,5 +1,5 @@
-module github.com/mailru/easyjson
+module github.com/coderyw/easyjson
 
-go 1.12
+go 1.21
 
 require github.com/josharian/intern v1.0.0
