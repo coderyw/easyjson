@@ -60,6 +60,7 @@ type fieldTags struct {
 	required    bool
 	intern      bool
 	noCopy      bool
+	noMarshal   bool
 }
 
 // parseFieldTags parses the json field tag into a structure.
@@ -84,6 +85,8 @@ func parseFieldTags(f reflect.StructField) fieldTags {
 			ret.intern = true
 		case s == "nocopy":
 			ret.noCopy = true
+		case s == "nomarshal":
+			ret.noMarshal = true
 		}
 	}
 
@@ -331,7 +334,10 @@ func (g *Generator) genStructFieldEncoder(t reflect.Type, f reflect.StructField,
 	if tags.omit {
 		return firstCondition, nil
 	}
-
+	if tags.noMarshal {
+		return firstCondition, nil
+	}
+	//fmt.Fprintln(g.out, "//  field:", jsonName, " tags: ", tags)
 	toggleFirstCondition := firstCondition
 
 	noOmitEmpty := (!tags.omitEmpty && !g.omitEmpty) || tags.noOmitEmpty
